@@ -1,7 +1,6 @@
 import socket
 import string
 import random
-from colorama import Fore, Back, Style
 
 
 
@@ -14,7 +13,7 @@ def client_program(cle):
 
     message = cle  # take input
 
-    while message.lower().strip() != 'bye':
+    while message.lower().strip() != 'exit':
         client_socket.send(message.encode())  # send message
         data = client_socket.recv(1024).decode()  # receive response
 
@@ -46,7 +45,7 @@ if __name__ == '__main__':
     data = client_socket.recv(1024).decode()  # receive response
     print('Received from server: ' + data)  # show in terminal
     if data=="method_accepted":
-        print(Back.GREEN+"[INFO] La methode "+message+" a été acceptée par le serveur")
+        print("[INFO] La methode "+message+" a été acceptée par le serveur")
         data = client_socket.recv(1024).decode()
         print('Message chiffré reçu : ' + data)
 

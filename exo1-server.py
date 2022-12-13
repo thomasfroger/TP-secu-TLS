@@ -17,6 +17,7 @@ def Cesar_all():
         else:
             asc=ord(acrypter[i])+cle
             MessageCrypte+=chr(asc+26*((asc<65)-(asc>90)))
+    
     return MessageCrypte
 
 def  RoT_13():
@@ -132,25 +133,25 @@ Proposer la méthode de chiffrement au serveur :
             cle=Cesar_all()
             print(cle)
             conn.send(cle.encode())  # send data to the client
-            print("Message chiffré envoyé au client.")
+            print("[SUCCESS] Message chiffré envoyé au client.")
         elif data=="rot13":
             data = "method_accepted"
             conn.send(data.encode())  # send data to the client
             cle=RoT_13()
             print(cle)
             conn.send(cle.encode())  # send data to the client
-            print("Message chiffré envoyé au client.")
+            print("[SUCCESS] Message chiffré envoyé au client.")
         elif data=="vigenere":
             data = "method_accepted"
             conn.send(data.encode())  # send data to the client
             msg=input("Message à chiffrer (Vigenere) : ")
             obj = VigenereCipher()
-            cle=obj.encrypt(msg, 'key') # returns s ek nilmsbov
+            cle=obj.encrypt(msg, 'abcdef') # returns s ek nilmsbov
             print(cle)
             conn.send(cle.encode())  # send data to the client
-            print("Message chiffré envoyé au client.")
+            print("[SUCCESS] Message chiffré envoyé au client.")
         else:
-            print("Impossible de trouver cette réponse")
+            print("[ERROR] Impossible de trouver cette réponse")
 
 
     conn.close()  # close the connection
