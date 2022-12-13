@@ -26,7 +26,7 @@ if __name__ == '__main__':
         print("[INFO] La methode "+actual_method+" a été acceptée par le serveur"+'\n')
         
         # Envoi du message à chiffrer
-        message=input("Message à chiffrer avec "+actual_method+" : ")
+        message=input("Message à déchiffrer avec "+actual_method+" : ")
         client_socket.send(message.encode())  # send message
 
         # Envoi de la clé de chiffrement
@@ -36,6 +36,5 @@ if __name__ == '__main__':
         # Reception du message déchiffré
         data = client_socket.recv(1024).decode()
         print('Message dechiffré : ' + data)
-
-
-    client_socket.close()  # close the connection
+    else:
+        client_socket.close()  # close the connection

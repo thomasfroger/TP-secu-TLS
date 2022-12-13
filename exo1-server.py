@@ -1,7 +1,8 @@
 import socket
-import string
 import random
 from itertools import product as col
+
+
 
 def Cesar_chiffrer():
     Messageacrypter=input("Message à chiffrer (CESAR) : ")
@@ -86,7 +87,9 @@ def Vigenere_dechiffrer(x,key):
 			
     return ''.join(lst_final)
 
-def server_program():
+
+if __name__ == '__main__':
+
     # get the hostname
     host = socket.gethostname()
     port = 5000  # initiate port no above 1024
@@ -114,12 +117,10 @@ Proposer la méthode de chiffrement au serveur :
 
 
     while True:
-        # receive data stream. it won't accept data packet greater than 1024 bytes
+        
+        # Reception de la methode choisie
         data = conn.recv(1024).decode()
-        if not data:
-            # if data is not received break
-            break
-        print("from connected user: " + str(data))
+        print("[INFO] Choix du client : " + str(data))
 
 
         if data=="cesar":
@@ -163,15 +164,10 @@ Proposer la méthode de chiffrement au serveur :
             print("La phrase déchiffrer par le serveur : ",result)
             conn.send(result.encode())  # send data to the client
 
-            
-
-
+        elif data=="exit":
+            conn.close()
         else:
             print("[ERROR] Impossible de trouver cette réponse")
-
-
-    conn.close()  # close the connection
-
-
-if __name__ == '__main__':
-    server_program()
+            conn.close()
+    
+    conn.close() # close the connection
