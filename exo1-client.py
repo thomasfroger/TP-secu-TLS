@@ -17,8 +17,6 @@ def Cesar_all():
     return MessageCrypte
 
 
-
-
 def client_program(cle):
     host = socket.gethostname()  # as both code is running on same pc
     port = 5000  # socket server port number
@@ -41,5 +39,25 @@ def client_program(cle):
 
 
 if __name__ == '__main__':
-    cle=Cesar_all()
+
+
+    print ("""
+    Choix de la méthode de chiffrement :
+    1.Cesar
+    2.Inactif
+    3.Inactif
+    4.Exit/Quit
+    """)
+    response=input("Numéro de choix :") 
+    if response=="1": 
+        cle=Cesar_all() 
+    elif response=="2":
+        print("\n Student Deleted") 
+    elif response=="3":
+        print("\n Student Record Found") 
+    elif response=="4":
+        print("\n Goodbye") 
+    elif response !="":
+        print("\n Not Valid Choice Try again") 
+    
     client_program(cle)
