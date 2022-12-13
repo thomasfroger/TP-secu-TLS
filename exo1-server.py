@@ -1,27 +1,44 @@
 import socket
 import string
 import random
+from itertools import product as col
 
-
-def Cesar_all():
+def Cesar_chiffrer():
     Messageacrypter=input("Message à chiffrer (CESAR) : ")
-    msg_chiffre=random.randint(1,25) # 26=0 correspond a aucun décalage
-    print("Clé de chiffrement : ",msg_chiffre)
+    cle_cesar=random.randint(1,25) # 26=0 correspond a aucun décalage
+    print("Clé de chiffrement : ",cle_cesar)
 
     acrypter=Messageacrypter.upper()
     lg=len(acrypter)
-    MessageCrypte=""
+    message_chiffre=""
 
     for i in range(lg):
         if acrypter[i]==' ':
-            MessageCrypte+=' '
+            message_chiffre+=' '
         else:
-            asc=ord(acrypter[i])+msg_chiffre
-            MessageCrypte+=chr(asc+26*((asc<65)-(asc>90)))
+            asc=ord(acrypter[i])+cle_cesar
+            message_chiffre+=chr(asc+26*((asc<65)-(asc>90)))
     
-    return MessageCrypte
+    result=message_chiffre+"-"+str(cle_cesar)
+    return result
 
-def  RoT_13():
+def Cesar_dechiffrer(phrase_cesar,cle_cesar):
+    
+    MessageCrypte=phrase_cesar
+    lg=len(MessageCrypte)
+    MessageClair=""
+    cle=int(cle_cesar) # Décalage par rapport à Y (code ASCII : 24 + 1 = 25e lettre de l'alphabet)
+
+    for i in range(lg):
+        if MessageCrypte[i]==' ':
+            MessageClair+=' '
+        else:
+            asc=ord(MessageCrypte[i])-cle
+            MessageClair+=chr(asc+26*((asc<65)-(asc>90)))
+    
+    return MessageClair
+
+def RoT_13_chiffrer():
 
     alphabet_maj=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
     random_list=random.sample(alphabet_maj, len(alphabet_maj))
@@ -38,61 +55,36 @@ def  RoT_13():
     txt = input("Message à chiffrer (ROT13) : ")
     return (txt.translate(rot13trans))
 
-class VigenereCipher:
-    """
-    def encrypt(self, plain_text, key):
-    def decrypt(self, cipher_text, key):
-    """
-    def __init__(self):
-        self._plain_text = []
-        self._key = ''
-        self._cipher_text = []
+def RoT_13_dechiffrer(phrase_rot13,cle_rot13):
+    rot13 = str.maketrans(
+        'ABCDEFGHIJKLMabcdefghijklmNOPQRSTUVWXYZnopqrstuvwxyz',
+        cle_rot13)
+    return (phrase_rot13.translate(rot13))
 
-    def encrypt(self, plain_text, key):
-        """
-        :param plain_text: plain text to be encrypted (str)
-        :param key: key to encrypt plain text (str)
-        :return: encrypted text (str)
-        """
-        index = 0
-        self._cipher_text = ""
-        self._plain_text = plain_text.lower()
-        self._key = key.lower()
-        for c in self._plain_text:
-            if c in string.ascii_lowercase:
-                off = ord(self._key[index]) - ord('a')
-                encrypt_num = (ord(c) - ord('a') + off) % 26
-                encrypt = chr(encrypt_num + ord('a'))
-                self._cipher_text += encrypt
-                index = (index + 1) % len(self._key)
+def Vigenere_dechiffrer(x,key):
+    lst_final = []
+    encrypt = False
+    code = list(x)
+    j = 0
+	
+    for i,char in enumerate(code):
+        if char.isalpha():
+            code[i] = key[(i+j)%len(key)]
+            if encrypt:
+                lst_final.append((ord(x[i]) + ord(code[i]) - 65 * 2) % 26)
             else:
-                self._cipher_text += c
-        return self._cipher_text
+                lst_final.append((ord(x[i]) - ord(code[i])) % 26)
+        else:
+            lst_final.append(ord(char))
+            j -=1
 
-    def decrypt(self, cipher_text, key):
-        """
-        :param cipher_text: cipher text to be decrypted (str)
-        :param key: key to decrypt cipher text (str)
-        :return: decrypted text (str)
-        """
-        index = 0
-        self._plain_text = ""
-        self._cipher_text = cipher_text.lower()
-        self._key = key.lower()
-        for c in self._cipher_text:
-            if c in string.ascii_lowercase:
-                off = ord(self._key[index]) - ord('a')
-                positive_off = 26 - off
-                decrypt = chr((ord(c) - ord('a') + positive_off) % 26 + ord('a'))
-                self._plain_text += decrypt
-                index = (index + 1) % len(self._key)
-            else:
-                self._plain_text += c
-        return self._plain_text
-
-def simple_transposition():
-    pass
-
+    for i,char in enumerate(code):
+        if char.isalpha():
+            lst_final[i] = chr(lst_final[i] + 65)
+        else:
+            lst_final[i] = chr(lst_final[i])
+			
+    return ''.join(lst_final)
 
 def server_program():
     # get the hostname
@@ -127,31 +119,53 @@ Proposer la méthode de chiffrement au serveur :
         if not data:
             # if data is not received break
             break
-        #print("from connected user: " + str(data))
+        print("from connected user: " + str(data))
+
+
         if data=="cesar":
             data = "method_accepted"
             conn.send(data.encode())  # send data to the client
-            msg_chiffre=Cesar_all()
-            print(msg_chiffre)
-            conn.send(msg_chiffre.encode())  # send data to the client
-            print("[SUCCESS] Message chiffré envoyé au client.")
-            print()
+            phrase = conn.recv(1024).decode()
+            print("Phrase du client : "+phrase)
+            cle_cesar = conn.recv(1024).decode()
+            print("Cle du client : "+cle_cesar)
+
+            result=Cesar_dechiffrer(phrase,cle_cesar)
+            print("La phrase déchiffrer par le serveur : ",result)
+            conn.send(result.encode())  # send data to the client
+
+
         elif data=="rot13":
             data = "method_accepted"
             conn.send(data.encode())  # send data to the client
-            msg_chiffre=RoT_13()
-            print(msg_chiffre)
-            conn.send(msg_chiffre.encode())  # send data to the client
-            print("[SUCCESS] Message chiffré envoyé au client.")
+            phrase_rot13 = conn.recv(1024).decode()
+            print("Phrase du client : "+phrase_rot13)
+            cle_rot13 = conn.recv(1024).decode()
+            print("Cle du client : "+cle_rot13)
+
+            result=RoT_13_dechiffrer(phrase_rot13,cle_rot13)
+            print("La phrase déchiffrer par le serveur : ",result)
+            conn.send(result.encode())  # send data to the client
+
+
         elif data=="vigenere":
             data = "method_accepted"
             conn.send(data.encode())  # send data to the client
-            msg=input("Message à chiffrer (Vigenere) : ")
-            obj = VigenereCipher()
-            msg_chiffre=obj.encrypt(msg, 'abcdef') # returns s ek nilmsbov
-            print(msg_chiffre)
-            conn.send(msg_chiffre.encode())  # send data to the client
-            print("[SUCCESS] Message chiffré envoyé au client.")
+            phrase_vigenere = conn.recv(1024).decode()
+            print("Phrase du client : "+phrase_vigenere)
+            cle_vigenere = conn.recv(1024).decode()
+            print("Cle du client : "+cle_vigenere)
+            x = phrase_vigenere.upper()
+            key = cle_vigenere.upper()
+
+            
+            result=Vigenere_dechiffrer(x,key)
+            print("La phrase déchiffrer par le serveur : ",result)
+            conn.send(result.encode())  # send data to the client
+
+            
+
+
         else:
             print("[ERROR] Impossible de trouver cette réponse")
 
