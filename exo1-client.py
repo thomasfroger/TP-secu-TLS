@@ -1,11 +1,13 @@
 import socket
 import string
+from random import *
 
 
 
 def Cesar_all():
     Messageacrypter=input("Message à chiffrer (CESAR) : ")
-    cle=24 # Décalage par rapport à Y (code ASCII : 24 + 1 = 25e lettre de l'alphabet)
+    cle=randint(1,25) # 26=0 correspond a aucun décalage
+    print("Clé de chiffrement : ",cle)
 
     acrypter=Messageacrypter.upper()
     lg=len(acrypter)
@@ -25,6 +27,9 @@ def  RoT_13():
    'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm')
     txt = input("Message à chiffrer (ROT13) : ")
     return (txt.translate(rot13trans))
+
+def simple_transposition():
+    pass
 
 
 def client_program(cle):
@@ -69,6 +74,6 @@ Choix de la méthode de chiffrement :
     elif response=="4":
         print("\n ") 
     elif response !="":
-        print("\n Not Valid Choice Try again") 
+        print("\n Choix invalide. Réessayez") 
     
     client_program(cle)
