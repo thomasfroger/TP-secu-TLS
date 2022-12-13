@@ -23,6 +23,19 @@ def Cesar_all():
 
 
 def  RoT_13():
+
+    alphabet_maj=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+    random_list=random.sample(alphabet_maj, len(alphabet_maj))
+    list_maj = ''.join(random_list)
+    print(list_maj)
+    alphabet_min=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+    random_list=random.sample(alphabet_min, len(alphabet_min))
+    list_min = ''.join(random_list)
+    print(list_min)
+    all_alphabet=alphabet_maj+alphabet_min
+    print(all_alphabet)
+
+
     rot13trans = str.maketrans('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 
    'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm')
     txt = input("Message à chiffrer (ROT13) : ")
