@@ -1,61 +1,9 @@
-import string
-
-
-class VigenereCipher:
-    """
-    def encrypt(self, plain_text, key):
-    def decrypt(self, cipher_text, key):
-    """
-    def __init__(self):
-        self._plain_text = []
-        self._key = ''
-        self._cipher_text = []
-
-    def encrypt(self, plain_text, key):
-        """
-        :param plain_text: plain text to be encrypted (str)
-        :param key: key to encrypt plain text (str)
-        :return: encrypted text (str)
-        """
-        index = 0
-        self._cipher_text = ""
-        self._plain_text = plain_text.lower()
-        self._key = key.lower()
-        for c in self._plain_text:
-            if c in string.ascii_lowercase:
-                off = ord(self._key[index]) - ord('a')
-                encrypt_num = (ord(c) - ord('a') + off) % 26
-                encrypt = chr(encrypt_num + ord('a'))
-                self._cipher_text += encrypt
-                index = (index + 1) % len(self._key)
-            else:
-                self._cipher_text += c
-        return self._cipher_text
-
-    def decrypt(self, cipher_text, key):
-        """
-        :param cipher_text: cipher text to be decrypted (str)
-        :param key: key to decrypt cipher text (str)
-        :return: decrypted text (str)
-        """
-        index = 0
-        self._plain_text = ""
-        self._cipher_text = cipher_text.lower()
-        self._key = key.lower()
-        for c in self._cipher_text:
-            if c in string.ascii_lowercase:
-                off = ord(self._key[index]) - ord('a')
-                positive_off = 26 - off
-                decrypt = chr((ord(c) - ord('a') + positive_off) % 26 + ord('a'))
-                self._plain_text += decrypt
-                index = (index + 1) % len(self._key)
-            else:
-                self._plain_text += c
-        return self._plain_text
-
-
-
-
-obj = VigenereCipher()
-print(obj.encrypt('bonjour tout le monde', 'truc')) # returns s ek nilmsbov
-print(obj.decrypt('lsltssb xmex jo qmxhc', 'key')) # returns i am dencoder
+from Crypto.Cipher import Salsa20
+>> >
+key = b'0123456789012345'
+cipher = Salsa20.new(key)
+ciphertext = cipher.encrypt(b'The secret I want to send.')
+ciphertext += cipher.encrypt(b'The second part of the secret.')
+print
+cipher.nonce  # A byte string you must send to the receiver to
+r
