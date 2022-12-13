@@ -1,4 +1,7 @@
 import socket
+import string
+
+
 
 def Cesar_all():
     Messageacrypter=input("Message à chiffrer (CESAR) : ")
@@ -15,6 +18,13 @@ def Cesar_all():
             asc=ord(acrypter[i])+cle
             MessageCrypte+=chr(asc+26*((asc<65)-(asc>90)))
     return MessageCrypte
+
+
+def  RoT_13():
+    rot13trans = str.maketrans('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 
+   'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm')
+    txt = input("Message à chiffrer (ROT13) : ")
+    return (txt.translate(rot13trans))
 
 
 def client_program(cle):
@@ -42,9 +52,10 @@ if __name__ == '__main__':
 
 
     print ("""
-    Choix de la méthode de chiffrement :
+Choix de la méthode de chiffrement :
+
     1.Cesar
-    2.Inactif
+    2.ROT13
     3.Inactif
     4.Exit/Quit
     """)
@@ -52,11 +63,11 @@ if __name__ == '__main__':
     if response=="1": 
         cle=Cesar_all() 
     elif response=="2":
-        print("\n Student Deleted") 
+        cle=RoT_13()
     elif response=="3":
-        print("\n Student Record Found") 
+        print("\n ") 
     elif response=="4":
-        print("\n Goodbye") 
+        print("\n ") 
     elif response !="":
         print("\n Not Valid Choice Try again") 
     
