@@ -34,8 +34,9 @@ Proposer la méthode de chiffrement :
 
     1.Cesar
     2.ROT13
-    3.Inactif
-    4.Exit/Quit
+    3.Vigenere
+    4.Simple Transposition
+    5.Exit/Quit
     """)
     response=input("Numéro de choix :") 
     if response=="1": 
@@ -47,7 +48,7 @@ Proposer la méthode de chiffrement :
         message="rot13"
         #cle=RoT_13()
     elif response=="3":
-        print("\n ") 
+        message="vigenere"
     elif response=="4":
         print("\n ") 
     elif response !="":
