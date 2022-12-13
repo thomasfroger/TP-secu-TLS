@@ -68,6 +68,7 @@ Proposer la méthode de chiffrement :
     if data=="method_accepted":
         print("La methode "+message+" a été accepté par le serveur")
         data = client_socket.recv(1024).decode()
+        print('Message chiffré reçu : ' + data)
 
 
     client_socket.close()  # close the connection

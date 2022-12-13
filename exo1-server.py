@@ -65,13 +65,17 @@ def server_program():
         if data=="cesar":
             data = "method_accepted"
             conn.send(data.encode())  # send data to the client
-            Cesar_all()
+            cle=Cesar_all()
+            print(cle)
+            conn.send(cle.encode())  # send data to the client
+            print("Message chiffré envoyé au client.")
         elif data=="rot13":
             data = "method_accepted"
             conn.send(data.encode())  # send data to the client
             cle=RoT_13()
             print(cle)
             conn.send(cle.encode())  # send data to the client
+            print("Message chiffré envoyé au client.")
 
 
     conn.close()  # close the connection
