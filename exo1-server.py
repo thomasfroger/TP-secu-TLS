@@ -2,10 +2,11 @@ import socket
 import string
 import random
 
+
 def Cesar_all():
     Messageacrypter=input("Message à chiffrer (CESAR) : ")
-    cle=random.randint(1,25) # 26=0 correspond a aucun décalage
-    print("Clé de chiffrement : ",cle)
+    msg_chiffre=random.randint(1,25) # 26=0 correspond a aucun décalage
+    print("Clé de chiffrement : ",msg_chiffre)
 
     acrypter=Messageacrypter.upper()
     lg=len(acrypter)
@@ -15,7 +16,7 @@ def Cesar_all():
         if acrypter[i]==' ':
             MessageCrypte+=' '
         else:
-            asc=ord(acrypter[i])+cle
+            asc=ord(acrypter[i])+msg_chiffre
             MessageCrypte+=chr(asc+26*((asc<65)-(asc>90)))
     
     return MessageCrypte
@@ -130,25 +131,26 @@ Proposer la méthode de chiffrement au serveur :
         if data=="cesar":
             data = "method_accepted"
             conn.send(data.encode())  # send data to the client
-            cle=Cesar_all()
-            print(cle)
-            conn.send(cle.encode())  # send data to the client
+            msg_chiffre=Cesar_all()
+            print(msg_chiffre)
+            conn.send(msg_chiffre.encode())  # send data to the client
             print("[SUCCESS] Message chiffré envoyé au client.")
+            print()
         elif data=="rot13":
             data = "method_accepted"
             conn.send(data.encode())  # send data to the client
-            cle=RoT_13()
-            print(cle)
-            conn.send(cle.encode())  # send data to the client
+            msg_chiffre=RoT_13()
+            print(msg_chiffre)
+            conn.send(msg_chiffre.encode())  # send data to the client
             print("[SUCCESS] Message chiffré envoyé au client.")
         elif data=="vigenere":
             data = "method_accepted"
             conn.send(data.encode())  # send data to the client
             msg=input("Message à chiffrer (Vigenere) : ")
             obj = VigenereCipher()
-            cle=obj.encrypt(msg, 'abcdef') # returns s ek nilmsbov
-            print(cle)
-            conn.send(cle.encode())  # send data to the client
+            msg_chiffre=obj.encrypt(msg, 'abcdef') # returns s ek nilmsbov
+            print(msg_chiffre)
+            conn.send(msg_chiffre.encode())  # send data to the client
             print("[SUCCESS] Message chiffré envoyé au client.")
         else:
             print("[ERROR] Impossible de trouver cette réponse")
