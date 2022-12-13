@@ -36,7 +36,6 @@ def  RoT_13():
     txt = input("Message à chiffrer (ROT13) : ")
     return (txt.translate(rot13trans))
 
-
 class VigenereCipher:
     """
     def encrypt(self, plain_text, key):
@@ -92,6 +91,7 @@ class VigenereCipher:
 def simple_transposition():
     pass
 
+
 def server_program():
     # get the hostname
     host = socket.gethostname()
@@ -105,13 +105,27 @@ def server_program():
     server_socket.listen(2)
     conn, address = server_socket.accept()  # accept new connection
     print("Connection from: " + str(address))
+
+
+    menu_interactif="""
+Proposer la méthode de chiffrement au serveur :
+
+    cesar : Utilisation de méthode Cesar
+    rot13 : Utilisation de méthode ROT 13
+    vigenere : Utilisation de méthode Vigenere
+    quit : Exit menu
+    """
+    conn.send(menu_interactif.encode())  # send data to the client
+    print("[INFO] Menu envoyé au client")
+
+
     while True:
         # receive data stream. it won't accept data packet greater than 1024 bytes
         data = conn.recv(1024).decode()
         if not data:
             # if data is not received break
             break
-        print("from connected user: " + str(data))
+        #print("from connected user: " + str(data))
         if data=="cesar":
             data = "method_accepted"
             conn.send(data.encode())  # send data to the client
@@ -135,6 +149,8 @@ def server_program():
             print(cle)
             conn.send(cle.encode())  # send data to the client
             print("Message chiffré envoyé au client.")
+        else:
+            print("Impossible de trouver cette réponse")
 
 
     conn.close()  # close the connection

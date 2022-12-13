@@ -1,7 +1,7 @@
 import socket
 import string
 import random
-
+from colorama import Fore, Back, Style
 
 
 
@@ -29,45 +29,24 @@ def client_program(cle):
 if __name__ == '__main__':
 
 
-    print ("""
-Proposer la méthode de chiffrement :
-
-    1.Cesar
-    2.ROT13
-    3.Vigenere
-    4.Simple Transposition
-    5.Exit/Quit
-    """)
-    response=input("Numéro de choix :") 
-    if response=="1": 
-        print("--- Vous avez proposé la méthode Cesar ---")
-        message="cesar"
-        #cle=Cesar_all() 
-    elif response=="2":
-        print("--- Vous avez proposé la méthode ROT13 ---")
-        message="rot13"
-        #cle=RoT_13()
-    elif response=="3":
-        message="vigenere"
-    elif response=="4":
-        print("\n ") 
-    elif response !="":
-        print("\n Choix invalide. Réessayez") 
-    
-
-
     host = socket.gethostname()  # as both code is running on same pc
     port = 5000  # socket server port number
 
     client_socket = socket.socket()  # instantiate
     client_socket.connect((host, port))  # connect to the server
 
-    print("Message envoyé : ",message)
+
+    data = client_socket.recv(1024).decode()  # receive response
+    print(data)  # show in terminal
+
+
+    message=input("Réponse : ")
+    #print("Message envoyé : ",message)
     client_socket.send(message.encode())  # send message
     data = client_socket.recv(1024).decode()  # receive response
     print('Received from server: ' + data)  # show in terminal
     if data=="method_accepted":
-        print("La methode "+message+" a été accepté par le serveur")
+        print(Back.GREEN+"[INFO] La methode "+message+" a été acceptée par le serveur")
         data = client_socket.recv(1024).decode()
         print('Message chiffré reçu : ' + data)
 
