@@ -21,7 +21,7 @@ def server_program():
             # if data is not received break
             break
         print("from connected user: " + str(data))
-        data = input(' -> ')
+        data = input(' Ciphersuites du serveur : ')
         conn.send(data.encode())  # send data to the client
 
     conn.close()  # close the connection
