@@ -1,4 +1,45 @@
 import socket
+import string
+import random
+
+def Cesar_all():
+    Messageacrypter=input("Message à chiffrer (CESAR) : ")
+    cle=random.randint(1,25) # 26=0 correspond a aucun décalage
+    print("Clé de chiffrement : ",cle)
+
+    acrypter=Messageacrypter.upper()
+    lg=len(acrypter)
+    MessageCrypte=""
+
+    for i in range(lg):
+        if acrypter[i]==' ':
+            MessageCrypte+=' '
+        else:
+            asc=ord(acrypter[i])+cle
+            MessageCrypte+=chr(asc+26*((asc<65)-(asc>90)))
+    return MessageCrypte
+
+
+def  RoT_13():
+
+    alphabet_maj=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+    random_list=random.sample(alphabet_maj, len(alphabet_maj))
+    list_maj = ''.join(random_list)
+    alphabet_min=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+    random_list=random.sample(alphabet_min, len(alphabet_min))
+    list_min = ''.join(random_list)
+    all_alphabet=list_maj+list_min
+    print("Clé de chiffrement : ",all_alphabet)
+
+
+    rot13trans = str.maketrans(all_alphabet, 
+   'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm')
+    txt = input("Message à chiffrer (ROT13) : ")
+    return (txt.translate(rot13trans))
+
+def simple_transposition():
+    pass
+
 
 
 def server_program():
@@ -21,8 +62,17 @@ def server_program():
             # if data is not received break
             break
         print("from connected user: " + str(data))
-        data = input(' Ciphersuites du serveur : ')
-        conn.send(data.encode())  # send data to the client
+        if data=="cesar":
+            data = "method_accepted"
+            conn.send(data.encode())  # send data to the client
+            Cesar_all()
+        elif data=="rot13":
+            data = "method_accepted"
+            conn.send(data.encode())  # send data to the client
+            cle=RoT_13()
+            print(cle)
+            conn.send(cle.encode())  # send data to the client
+
 
     conn.close()  # close the connection
 
